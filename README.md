@@ -19,23 +19,36 @@ Not implemented: some more commands (PRs are welcome)
 
 Also see: [Samsung MDC Unified](http://www.samsung-mcloud.com/01_Software/04_Tools/MDC/v1235/) - Reference Application (GUI, Windows) with partially implemented functionality.
 
-## Install<a id="install"></a>
+## Installation locale depuis un fork
 
-```
-# using pipx https://pypa.github.io/pipx/
-pipx run python-samsung-mdc --help
+Clonez le dépôt de votre fork (exemple : https://github.com/romain25/samsung-mdc) :
 
-# OR global install/upgrade
-sudo pip3 install --upgrade python-samsung-mdc
-samsung-mdc --help
-
-# OR local
-git clone https://github.com/vgavro/samsung-mdc
-cd ./samsung-mdc
+```bash
+git clone https://github.com/romain25/samsung-mdc.git
+cd samsung-mdc/samsung-mdc
 python3 -m venv venv
-./venv/bin/pip3 install -e ./
-./venv/bin/samsung-mdc --help
+source venv/bin/activate
+pip install -e .
 ```
+
+Pour utiliser le CLI en local (sans installation globale) :
+
+```bash
+python3 -m samsung_mdc --help
+```
+
+Pour exécuter une commande sur un écran :
+
+```bash
+python3 -m samsung_mdc 0@192.168.66.16:1515 magicinfo_channel_get
+```
+
+Vous pouvez modifier le code source et relancer la commande directement, sans réinstaller le package à chaque fois (sauf si vous modifiez setup.py ou l’organisation des modules).
+
+---
+
+Pour une installation globale ou via pipx, référez-vous à la documentation d’origine.
+
 
 ### Windows install<a id="windows-install"></a>
 1. Install Git && Git Bash: https://git-scm.com/download/win
