@@ -318,6 +318,62 @@ class MAGICINFO_CHANNEL(Command):
 
     DATA = [Int('CHANNEL_NUMBER', length=2, byteorder='big')]
 
+class MAGICINFO_CHANNEL_GET(Command):
+    name = "magicinfo_channel_get"
+
+    async def __call__(self, connection, display_id, data=b''):
+        data = self.parse_response(
+            await connection.send(
+                (self.CMD, self.SUBCMD), display_id,
+                self.pack_payload_data(data) if data else []
+            ),
+        )
+        # Retourne un tuple contenant l'entier pour compatibilité CLI
+        return (self.parse_response_data(data),)
+
+    """
+    Get MagicInfo Channel by requesting the current channel setting.
+    """
+    CMD = 0x1C
+    SUBCMD = 0x81
+    GET, SET = True, False
+
+    DATA = []
+
+    def build(self, get=False, set=False, **kwargs):
+        """
+        Override build to handle GET with DataLength=1 but no data payload.
+        """
+        if get:
+            # Build packet with DataLength = 1 and no data
+            packet = bytearray()
+            packet.append(0xAA)  # Header
+            packet.append(0x00)  # Reserved
+            packet.append(0x01)  # Data Length = 1
+            packet.append(self.CMD)
+            packet.append(0x01)  # Data Length for subcommand = 1
+            packet.append(self.SUBCMD)
+            # checksum calculation: XOR of all bytes except header
+            checksum = 0
+            for b in packet[1:]:
+                checksum ^= b
+            packet.append(checksum)
+            return bytes(packet)
+        else:
+            # fallback to default build (if needed)
+            return super().build(get=get, set=set, **kwargs)
+
+    @classmethod
+    def parse_response_data(cls, data):
+        """
+        Parse the response data to extract the channel number.
+        The channel is in the last two bytes of the data (big endian).
+        """
+        if len(data) < 2:
+            raise ValueError("Response data too short to contain channel info")
+        channel = int.from_bytes(data[-2:], byteorder="big")
+        return channel
+
 
 class MAGICINFO_SERVER(Command):
     """

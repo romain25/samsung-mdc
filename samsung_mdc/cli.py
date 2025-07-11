@@ -390,9 +390,11 @@ class MDCClickCommand(FixedSubcommand):
 
         async def mdc_call(connection, display_id):
             try:
-                print(f'{display_id}@{connection.target}',
-                      _repr(await self.mdc_command(connection, display_id,
-                                                   *args)))
+                result = await self.mdc_command(connection, display_id, *args)
+                # If result is a plain int, wrap in tuple for consistent output
+                if isinstance(result, int):
+                    result = (result,)
+                print(f'{display_id}@{connection.target}', _repr(result))
             except Exception as exc:
                 print(f'{display_id}@{connection.target}',
                       f'{exc.__class__.__name__}: {exc}')
