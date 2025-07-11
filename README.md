@@ -40,7 +40,7 @@ python3 -m samsung_mdc --help
 Pour exécuter une commande sur un écran :
 
 ```bash
-python3 -m samsung_mdc 0@192.168.66.16:1515 magicinfo_channel_get
+python3 -m samsung_mdc 0@IP:1515 magicinfo_channel_get
 ```
 
 Vous pouvez modifier le code source et relancer la commande directement, sans réinstaller le package à chaque fois (sauf si vous modifiez setup.py ou l’organisation des modules).
@@ -123,6 +123,7 @@ Options:
 * [network_ap_config](#network_ap_config) `SSID PASSWORD`
 * [weekly_restart](#weekly_restart) `[WEEKDAY TIME]`
 * [magicinfo_channel](#magicinfo_channel) `CHANNEL_NUMBER`
+* [magicinfo_channel_get](#magicinfo_channel) `CHANNEL_NUMBER`
 * [magicinfo_server](#magicinfo_server) `[MAGICINFO_SERVER_URL]`
 * [magicinfo_content_orientation](#magicinfo_content_orientation) `[ORIENTATION_MODE_STATE]`
 * [mdc_connection](#mdc_connection) `[MDC_CONNECTION_TYPE]`
@@ -407,6 +408,15 @@ Usage: samsung-mdc [OPTIONS] TARGET magicinfo_channel CHANNEL_NUMBER
 Data:
   CHANNEL_NUMBER  int
 ```
+
+#### magicinfo_channel_get<a id="magicinfo_channel_get"></a>
+```
+Usage: samsung-mdc [OPTIONS] TARGET magicinfo_channel_get
+
+  Get MagicInfo Channel by Direct Channel Number which is used by MagicInfo S
+  Player.
+```
+
 #### magicinfo_server<a id="magicinfo_server"></a>
 ```
 Usage: samsung-mdc [OPTIONS] TARGET magicinfo_server [MAGICINFO_SERVER_URL]
